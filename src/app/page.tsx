@@ -1,103 +1,81 @@
-import Image from "next/image";
+'use client'
+
+import { useEffect, useRef, useState } from 'react'
+
+import Link from "next/link";
+import { FiTrash, FiRefreshCcw, FiEdit } from "react-icons/fi";
+
+import { api } from '@/services/api'
+
+interface ClientProps{
+  id:string;
+  name: string;
+  number:string;
+  created_at:string;
+}
+
 
 export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
-  );
+    const [clients, setClients] = useState<ClientProps[]>([]);
+
+  const nameRef = useRef<HTMLInputElement>(null)
+  const numberRef = useRef<HTMLInputElement>(null)
+
+  useEffect(()=>{
+      listClients()
+  },[])
+
+  async function listClients(){
+    const response = await api.get("/list-clients")
+    setClients(response.data)
+  }
+
+  return (
+   <main className="flex flex-col items-center min-h-screen mt-8 mx-8">
+    
+    <h1 className="font-medium text-3xl md:text-4xl ">Cadasto de clientes</h1>
+
+    <form className="flex flex-col gap-1 w-full">
+      <label htmlFor="name">Nome do cliente:</label>
+      <input type="text" name="name"  placeholder="Nome completo do cliente" className="border border-gray-500 rounded p-1 placeholder:text-sm" ref={nameRef}/>
+
+      <label htmlFor="number">Número do cliente:</label>
+      <input type="number" name="number"  placeholder="ex:229999..." className="border rounded p-1 placeholder:text-sm border-gray-500" ref={numberRef}/>
+
+      <label htmlFor="plans">Selecione o plano:</label>
+        <select name="plans" id="plans" className="p-1 rounded bg-gray-200">
+          <option value="">plano ouro</option>
+          <option value="">plano ouro</option>
+          <option value="">plano ouro</option>
+          <option value="">plano ouro</option>
+        </select>
+  
+      <input type="submit" value="Cadastrar" className="border rounded bg-green-400 font-medium text-white py-1 hover:bg-green-600 hover:scale-105 duration-300 cursor-pointer mt-4 shadow-2xl"/>
+
+
+    </form>
+
+    <section className="mt-8 w-full">
+        <h3 className="font-semibold text-2xl">Dados do cliente</h3>
+       {clients.map((client)=>(
+      <article key={client.id} className="relative shadow-2xl px-6  py-4 mt-4 rounded bg-gray-200 ">
+         <p>Nome: <span>{client.name}</span></p>
+        <p>Número: <span>{client.number}</span></p>
+        <p>Plano: <span>ouro</span></p>
+        <p>Status: <span>ativo</span></p> 
+        
+        <button className="bg-red-600 py-1 px-2 rounded absolute  top-22 right-4 hover:scale-110 cursor-pointer duration-300 flex items-center gap-1 text-white font-semibold text-sm">Deletar<FiTrash size={18} color="#fff"/></button>
+
+         <Link href={'/edit'}><button className="bg-blue-500 py-1 px-2 rounded absolute top-13 right-4 hover:scale-110 cursor-pointer duration-300 flex items-center gap-1 text-white font-semibold text-sm" >Editar<FiEdit size={18} color="#fff"/></button></Link>
+
+
+          <button className="bg-green-500 py-1 px-2 rounded absolute top-4 right-4 hover:scale-110 cursor-pointer duration-300 flex items-center gap-1 text-white font-semibold text-sm">Renovar<FiRefreshCcw size={18} color="#fff"/></button>
+
+      </article>
+       ))}
+
+    </section>
+   </main>
+  )
 }
