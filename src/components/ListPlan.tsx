@@ -23,13 +23,13 @@ const ListPlan = () => {
 
   return (
     <section>
-        <label htmlFor="plans">Selecione o plano:</label>
+        <label htmlFor="plans" className="font-semibold">Selecione o plano: </label>
   
+        <select  name="plans" id="plans" className="p-1 rounded bg-gray-300 cursor-pointer">
            {plans.map((plan)=>(
-             <select key={plan.id} name="plans" id="plans" className="p-1 rounded bg-gray-200 ">
-              <option value="">Plano: {plan.name}, Valor R$: {plan.price}</option>
+              <option key={plan.id} value="" className=""> R$: {plan.price} | {plan.name} </option>
+            ))}
             </select>
-           ))}
             </section>
   )
 }
