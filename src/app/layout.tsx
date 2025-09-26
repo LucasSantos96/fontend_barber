@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 
 import { ClientProvider } from "@/context/ClientContext";
+import { PlanProvider } from "@/context/PlanContext";
 
 
 const montserrat = Montserrat({
@@ -26,10 +27,11 @@ export default function RootLayout({
       <body
         className={`${montserrat.variable} antialiased `}
       >
-       
     <ClientProvider>
+       <PlanProvider>
         <Navbar/>
         {children}
+        </PlanProvider>
     </ClientProvider>
       </body>
     </html>

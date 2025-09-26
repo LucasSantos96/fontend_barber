@@ -1,42 +1,38 @@
 'use client'
-import { api } from "@/services/api"
-import { FormEvent, useRef, useState } from "react";
+import { usePlan } from "@/hooks/UsePlan"
+ import React, {useRef,} from "react";
 
-interface PlanProps{
-  id:string;
-  name:string;
-  price:string;
-}
+
 
 const AddPlan = () => {
-  const nameRef = useRef<HTMLInputElement>(null)
-  const priceRef = useRef<HTMLInputElement>(null)
+  
+  
+const {handleSubmit} = usePlan()
+const nameRef = useRef<HTMLInputElement>(null);
+const priceRef = useRef<HTMLInputElement>(null);
+  
+  const handleFormSubmit = (e: React.FormEvent)=>{
+    e.preventDefault();
 
+    if (!nameRef.current || !priceRef.current) return;
 
-  const [plan, setPlan] = useState<PlanProps[]>([])
+    handleSubmit({
+        name: nameRef.current?.value || "",
+        price: priceRef.current?.value || ""
+    });
+    nameRef.current.value ='';
+    priceRef.current.value ='';
 
-
-
- async function handleSubmit (e:FormEvent){
-  e.preventDefault();
-
-    if(!nameRef.current?.value || !priceRef.current?.value) return;
-
-     const response = await api.post('/add-plan',{
-      name:nameRef.current?.value,
-      price:priceRef.current?.value
-    }) 
-    setPlan(allPlans =>[...allPlans, response.data])
-    alert('Plano cadastrado com Sucesso!')
-    nameRef.current.value = ''
-    priceRef.current.value=''
   }
+
+
+
 
 
 
   return(
     <section className="mx-8 mt-8">
-      <form className="flex flex-col gap-2 mx-auto" onSubmit={handleSubmit}> 
+      <form className="flex flex-col gap-2 mx-auto" onSubmit={handleFormSubmit}> 
         <label htmlFor="name">Nome do Plano:</label>
         <input className="rounded border border-gray-400 p-1" type="text"  name="name" placeholder="Digite o nome do plano" ref={nameRef}/>
 

@@ -7,6 +7,7 @@ interface ClientProps {
   id: string;
   name: string;
   number: string;
+  planId:string
 
 }
 
@@ -25,8 +26,7 @@ export function ClientProvider({children}:{children:ReactNode}) {
 
     const [clients, setClients] = useState<ClientProps[]>([]);
 
-      const nameRef = useRef<HTMLInputElement>(null);
-      const numberRef = useRef<HTMLInputElement>(null);
+
 
   useEffect(() => {
     listClients();
@@ -38,14 +38,15 @@ export function ClientProvider({children}:{children:ReactNode}) {
   }
 
 
-    async function handleSubmit( {name,number}: Omit<ClientProps,"id">) {
+    async function handleSubmit( {name,number,planId}: Omit<ClientProps,"id">) {
    
 
-    if (!name || !number) return;
+    if (!name || !number || !planId) return;
 
     const response = await api.post("/add-client", {
       name,
       number,
+      planId,
     });
     setClients((allClients) => [...allClients, response.data]);
     

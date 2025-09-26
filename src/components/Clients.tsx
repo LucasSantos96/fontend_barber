@@ -1,35 +1,41 @@
-'use client'
- import React, {useRef,} from "react";
+"use client";
+import { useRef } from "react";
 
 //Hook do contexto
 import { useClient } from "@/hooks/UseClient";
-import Plans from "./Plans";
- 
-  const Clients = () => {
+import { usePlan } from "@/hooks/UsePlan";
 
-  const {handleSubmit} = useClient();
+import Plans from "./Plans";
+
+const Clients = () => {
+
+
+  const { handleSubmit } = useClient();
+
+  const {selectedPlanId} = usePlan()
 
   const nameRef = useRef<HTMLInputElement>(null);
   const numberRef = useRef<HTMLInputElement>(null);
 
-  const handleFormSubmit = (e: React.FormEvent)=>{
+  const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!nameRef.current || !numberRef.current) return;
+    if (!nameRef.current || !numberRef.current || !selectedPlanId) return;
+
     handleSubmit({
-        name: nameRef.current?.value || "",
-        number: numberRef.current?.value || ""
+      name: nameRef.current?.value || "",
+      number: numberRef.current?.value || "",
+      planId: selectedPlanId,
     });
-    nameRef.current.value ='';
-    numberRef.current.value ='';
+    nameRef.current.value = "";
+    numberRef.current.value = "";
+  };
 
-  }
-
-
-
-   return (
-     <section>
-          <h1 className="font-medium mb-4 text-3xl md:text-4xl ">Cadasto de clientes</h1>
+  return (
+    <section>
+      <h1 className="font-medium mb-4 text-3xl md:text-4xl ">
+        Cadastro de clientes
+      </h1>
 
       <form className="flex flex-col gap-1 w-full">
         <label htmlFor="name">Nome do cliente:</label>
@@ -49,7 +55,7 @@ import Plans from "./Plans";
           className="border rounded p-1 placeholder:text-sm border-gray-500"
           ref={numberRef}
         />
-      <Plans/>
+        <Plans />
         <button
           onClick={handleFormSubmit}
           className="border rounded bg-green-400 font-medium text-white py-2 hover:bg-green-600 hover:scale-105 duration-300 cursor-pointer mt-4 shadow-2xl"
@@ -57,8 +63,8 @@ import Plans from "./Plans";
           Cadastrar
         </button>
       </form>
-     </section>
-   )
- }
- 
- export default Clients
+    </section>
+  );
+};
+
+export default Clients;
