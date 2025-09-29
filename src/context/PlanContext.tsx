@@ -9,6 +9,8 @@ interface PlanProps{
   id:string;
   name:string;
   price:string;
+  status?: string;
+  expires_at?: string;
 }
 
 interface UsePlanTypes{
@@ -18,6 +20,7 @@ interface UsePlanTypes{
      handleSubmit:(PlanProps: Omit<PlanProps, "id">) => Promise<void>;
      selectedPlanId: string | null;
      setSelectedPlanId: (id: string | null) => void;
+    
 
 }
 
@@ -65,8 +68,13 @@ export function PlanProvider({children}:{children:ReactNode}) {
     setPlans(allPlans =>[...allPlans, response.data])
 
     alert('Plano cadastrado com Sucesso!')
-    
+
+
+
+
   }
+
+ 
 
 
 

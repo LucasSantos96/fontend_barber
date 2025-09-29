@@ -6,6 +6,7 @@
 import Clients from "@/components/Clients";
 import ListClients from "@/components/ListClients";
 
+
 export default function Home() {
 
 
@@ -16,7 +17,7 @@ export default function Home() {
      
       <Clients/>
       <ListClients/>
-
+    
       
     </main>
   );

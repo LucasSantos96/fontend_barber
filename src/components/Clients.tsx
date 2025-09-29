@@ -26,6 +26,8 @@ const Clients = () => {
       name: nameRef.current?.value || "",
       number: numberRef.current?.value || "",
       planId: selectedPlanId,
+      status:"ativo",
+      expires_at: new Date().toISOString() 
     });
     nameRef.current.value = "";
     numberRef.current.value = "";

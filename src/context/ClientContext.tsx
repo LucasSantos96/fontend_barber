@@ -7,7 +7,9 @@ interface ClientProps {
   id: string;
   name: string;
   number: string;
-  planId:string
+  planId:string;
+  status: string;
+  expires_at: string
 
 }
 
@@ -38,15 +40,20 @@ export function ClientProvider({children}:{children:ReactNode}) {
   }
 
 
-    async function handleSubmit( {name,number,planId}: Omit<ClientProps,"id">) {
+    async function handleSubmit( {name,number,planId}: Omit<ClientProps,"id"| "status" | "expires_at">) {
    
 
     if (!name || !number || !planId) return;
+
+    const expiresAt = new Date();
+    expiresAt.setDate(expiresAt.getDate() + 30); // hoje + 30 dias
 
     const response = await api.post("/add-client", {
       name,
       number,
       planId,
+      status: "active",
+      expires_at: expiresAt.toISOString() // manda em formato ISO
     });
     setClients((allClients) => [...allClients, response.data]);
     

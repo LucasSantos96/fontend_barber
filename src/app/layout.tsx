@@ -5,6 +5,7 @@ import Navbar from "@/components/Navbar";
 
 import { ClientProvider } from "@/context/ClientContext";
 import { PlanProvider } from "@/context/PlanContext";
+import Footer from "@/components/Footer";
 
 
 const montserrat = Montserrat({
@@ -25,12 +26,13 @@ export default function RootLayout({
   return (
     <html lang="Pt-Br">
       <body
-        className={`${montserrat.variable} antialiased `}
+        className={`${montserrat.variable} antialiased flex flex-col min-h-screen`}
       >
     <ClientProvider>
        <PlanProvider>
         <Navbar/>
-        {children}
+        <main className="flex-1">{children}</main>
+        <Footer/>
         </PlanProvider>
     </ClientProvider>
       </body>
